@@ -1,9 +1,9 @@
 <?php
 namespace security;
 spl_autoload_register( function ($class) {
-	$parts = explode('\\', $class);
-	$base = strtolower( end($parts) ) . '.php';
-	$file = 'classes' . DIRECTORY_SEPARATOR . $base;
+	$parts = explode('\\', strtolower($class));
+	array_unshift($parts, 'classes')
+	$file = implode(DIRECTORY_SEPARATOR, $parts) . '.php';
 	if (is_file($file)) {
 		require_once($file);
 	}
