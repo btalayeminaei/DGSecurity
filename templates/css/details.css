@@ -1,0 +1,28 @@
+fieldset {
+	margin-bottom: 3ex;
+	padding-left: 1em;
+}
+
+label, input {
+	display: block;
+}
+
+span {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+form {
+	left: 138px;
+	padding-top: 0;
+	display: inline-block;
+	position: relative
+}
+
+input {
+	width: 18em;
+}
+
+img {
+	position: absolute;
+}
