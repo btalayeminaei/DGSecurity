@@ -1,10 +1,11 @@
 <?php
 namespace presenters;
 
-class Details {
-	protected $view;
+function getPresenter($get) {
+}
 
-	function __construct($view) {
-		$this->view = $view;
+class Details {
+	function display($view) {
+		$view->render($vars);
 	}
 }
