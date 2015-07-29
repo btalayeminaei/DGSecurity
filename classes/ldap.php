@@ -57,19 +57,16 @@ class InetOrgPerson extends LDAPObject {
 	# TODO: also use attribute synonyms: ou = organizationalUnit
 	static protected $must = array( 'cn', 'sn' );
 	static protected $may = array(
-		'audio', 'businessCategory', 'carLicense', 'departmentNumber', 
-		'description', 'destinationIndicator', 'displayName', 
-		'employeeNumber', 'employeeType', 'facsimileTelephoneNumber', 
-		'givenName', 'homePhone', 'homePostalAddress', 'initials', 
-		'internationaliSDNNumber', 'jpegPhoto', 'l', 'labeledURI', 
-		'mail', 'manager', 'mobile', 'o', 'ou', 'pager', 'photo', 
-		'physicalDeliveryOfficeName', 'postalAddress', 'postalCode', 
-		'postOfficeBox', 'preferredDeliveryMethod', 
-		'preferredLanguage', 'registeredAddress', 'roomNumber', 
-		'secretary', 'seeAlso', 'st', 'street', 'telephoneNumber', 
-		'telephoneNumber', 'teletexTerminalIdentifier', 'telexNumber', 
-		'title', 'uid', 'userCertificate', 'userPassword', 
-		'userPKCS12', 'userSMIMECertificate', 'x121Address', 
-		'x500uniqueIdentifier'
+'description',
+'displayName',
+'givenName',
+'jpegPhoto',
+'mail',
+'manager',
+'mobile',
+'telephoneNumber',
+'title',
+'uid',
+'userPassword',
 	);
 }
