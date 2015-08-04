@@ -9,8 +9,13 @@ class AttributeError extends \Exception {
 	}
 }
 
+abstract class LDAPAttribute {
+	protected $value;
+}
+
 abstract class LDAPObject {
-	static protected $must = array(), $may = array();
+	static protected $must = array(), $may = array(),
+		$aliases = array(), $maps = array();
 	protected $dn, $attrs;
 
 	function __construct($dn, $attrs) {
@@ -57,16 +62,20 @@ class InetOrgPerson extends LDAPObject {
 	# TODO: also use attribute synonyms: ou = organizationalUnit
 	static protected $must = array( 'cn', 'sn' );
 	static protected $may = array(
-'description',
-'displayName',
-'givenName',
-'jpegPhoto',
-'mail',
-'manager',
-'mobile',
-'telephoneNumber',
-'title',
-'uid',
-'userPassword',
+		'description',
+		'displayName',
+		'givenName',
+		'jpegPhoto',
+		'mail',
+		'manager',
+		'mobile',
+		'telephoneNumber',
+		'title',
+		'uid',
+		'userPassword'
+	);
+	static protected $aliases = array(
+		'sn' => array('surname'),
+		'givenName' => array('gn')
 	);
 }
