@@ -29,7 +29,13 @@ abstract class LDAPObject {
 		$allowed = array_merge(static::$must, static::$may);
 		$allowed_names = array();
 		foreach ($allowed as $attr) {
-			array_push($allowed_names, $attr->getNames());
+			if (is_array($attr)) {
+				foreach ($attr as $name) {
+					array_push($allowed_names, $name);
+				}
+			} else {
+				array_push($allowed_names, $attr);
+			}
 		}
 		$unknown = array_diff($keys, $allowed_names);
 		if ($unknown) {
@@ -39,7 +45,7 @@ abstract class LDAPObject {
 		$this->dn = $dn;
 
 		foreach ($attrs as $attr) {
-			foreach ($attr->getNames() as $name) {
+			foreach ($attr as $name) {
 				# alternative attribute names will point at the same object
 				$this->attrs[$name] = $attr;
 			};
