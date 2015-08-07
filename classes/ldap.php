@@ -9,48 +9,46 @@ class AttributeError extends \Exception {
 	}
 }
 
-abstract class LDAPAttribute {
-	protected $value;
-}
-
 abstract class LDAPObject {
-	static protected $must = array(), $may = array(),
-		$aliases = array(), $maps = array();
+	static protected $must = array(), $may = array();
 	protected $dn, $attrs;
 
 	function __construct($dn, $attrs) {
 		$keys = array_keys($attrs);
 
-		$missing = array_diff(static::$must, $keys);
-		if ($missing) {
-			throw new AttributeError(
-				'Missing required attributes', $missing);
+		# check that all MUST attributes are present
+		foreach (static::$must as $attr) {
+			$must_names = is_array($attr) ? $attr : array($attr);
+			if (!array_intersect($must_names, $keys)) {
+				throw new AttributeError(
+					'Missing required attribute', $must_names);
+			}
 		}
 
-		$unknown = array_diff($keys, static::$must, static::$may);
+		# check if all present attributes are MAY or MUST
+		$allowed = array_merge(static::$must, static::$may);
+		$allowed_names = array();
+		foreach ($allowed as $attr) {
+			array_push($allowed_names, $attr->getNames());
+		}
+		$unknown = array_diff($keys, $allowed_names);
 		if ($unknown) {
 			throw new AttributeError( 'Unknown attributes', $unknown);
 		}
 
 		$this->dn = $dn;
 
-		foreach ($attrs as $name => $value) {
-			self::__set($name, $value);
-		}
-	}
-
-	function __set($name, $value) {
-		# convert single element arrays to scalars
-		if ( is_array($value) and count($value) == 1 ) {
-			$this->attrs[$name] = $value[0];
-		} else {
-			$this->attrs[$name] = $value;
+		foreach ($attrs as $attr) {
+			foreach ($attr->getNames() as $name) {
+				# alternative attribute names will point at the same object
+				$this->attrs[$name] = $attr;
+			};
 		}
 	}
 
 	function __get($name) {
 		return array_key_exists($name, $this->attrs) ?
-			$this->attrs[$name] : null;
+			$this->attrs[$name]->getValues() : null;
 	}
 
 	function __isset($name) {
@@ -59,12 +57,15 @@ abstract class LDAPObject {
 }
 
 class InetOrgPerson extends LDAPObject {
-	# TODO: also use attribute synonyms: ou = organizationalUnit
-	static protected $must = array( 'cn', 'sn' );
+	static protected $must = array(
+		'cn',
+		array('sn', 'surname')
+	);
 	static protected $may = array(
 		'description',
 		'displayName',
 		'givenName',
+		array('givenName', 'gn'),
 		'jpegPhoto',
 		'mail',
 		'manager',
@@ -73,9 +74,5 @@ class InetOrgPerson extends LDAPObject {
 		'title',
 		'uid',
 		'userPassword'
-	);
-	static protected $aliases = array(
-		'sn' => array('surname'),
-		'givenName' => array('gn')
 	);
 }
