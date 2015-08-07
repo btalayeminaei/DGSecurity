@@ -9,6 +9,18 @@ class AttributeError extends \Exception {
 	}
 }
 
+class LDAPAttribute {
+	protected $name, $value;
+	public function __construct($name, $value) {
+		$this->value = $value;
+		if (is_array($name)) {
+			$this->name = $name;
+		} else {
+			$this->name = array($name);
+		}
+	}
+}
+
 abstract class LDAPObject {
 	static protected $must = array(), $may = array();
 	protected $dn, $attrs;
