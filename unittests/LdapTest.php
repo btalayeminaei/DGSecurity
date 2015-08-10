@@ -1,13 +1,27 @@
 <?php
 class LDAPObjectTest extends PHPUnit_Framework_TestCase {
-	public function testAttributeNames() {
+	protected $person;
+
+	public function setUp() {
 		$dn = 'cn=jdoe,dc=example,dc=org';
 		$attrs = array(
 			'cn' => 'jdoe',
 			'sn' => 'Doe'
 		);
+		$this->person = new ldap\InetOrgPerson($dn, $attrs);
+	}
 
-		$person = new ldap\InetOrgPerson($dn, $attrs);
-		$this->assertEquals('Doe', $person->surname);
+	public function testAttribute() {
+		$this->assertEquals(
+			$this->person->surname,
+			'Doe'
+		);
+	}
+
+	public function testAttributeAlias() {
+		$this->assertEquals(
+			$this->person->sn,
+			$this->person->surname
+		);
 	}
 }
