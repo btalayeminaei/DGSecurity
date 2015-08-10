@@ -1,11 +1,40 @@
 <?php
 namespace presenters;
 
+class PresenterError extends \Exception { } 
+
 function getPresenter($get) {
+	$pres = strtolower($get['mode']);
+
+	switch ($pres) {
+	case 'details':
+		$class = 'Details'; break;
+	default:
+		throw new PresenterError("Unknown mode: $pres");
+	};
+
+	return new $class();
 }
 
-class Details {
-	function display($view) {
-		$view->render($vars);
+interface IPresenter {
+	public function __construct($get);
+	public function run();
+}
+
+class Details implements IPresenter {
+	protected $action;
+
+	public function __construct($get) {
+		if isset($get['action']) {
+			$this->action = strtolower($get['action']);
+		}
+	}
+
+	public function run() {
+		switch ($this->action) {
+		default:
+			$view = new views\View();
+			$view->render($vars);
+		}
 	}
 }

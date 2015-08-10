@@ -6,7 +6,7 @@ interface IView {
 	function render($vars);
 }
 
-abstract class View implements IView {
+class View implements IView {
 	function render($vars) {
 		$path = explode('\\', get_class($this));
 		$tpl = strtolower(end($path)) . '.tpl';
