@@ -1,4 +1,28 @@
 <?php
+class InvalidLDAPObjectTest extends PHPUnit_Framework_TestCase {
+	/*
+	 * @expectedException AttributeError
+	 */
+	public function testBadAttribute() {
+		$dn = 'cn=jdoe,dc=example,dc=org';
+		$attrs = array(
+			'cn' => 'jdoe',
+			'foo' => 'bar' # unknown attribute
+		);
+	}
+
+	/*
+	 * @expectedException AttributeError
+	 */
+	public function testMissingAttribute() {
+		$dn = 'cn=jdoe,dc=example,dc=org';
+		$attrs = array(
+			'cn' => 'jdoe'
+			# missing sn attribute
+		);
+	}
+}
+
 class LDAPObjectTest extends PHPUnit_Framework_TestCase {
 	protected $person;
 
