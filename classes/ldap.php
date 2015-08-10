@@ -9,64 +9,50 @@ class AttributeError extends \Exception {
 	}
 }
 
-class LDAPAttribute {
-	protected $name, $value;
-	public function __construct($name, $value) {
-		$this->value = $value;
-		if (is_array($name)) {
-			$this->name = $name;
-		} else {
-			$this->name = array($name);
-		}
-	}
-}
-
 abstract class LDAPObject {
-	static protected $must = array(), $may = array();
-	protected $dn, $attrs;
+	static protected $must = array(), $may = array(), $aliases = array();
+	protected $dn, $attrs, $attr_names;
+
+	private function realName($name) {
+		if ( !array_key_exists($name, $this->attr_names) ) {
+			throw new AttributeError( 'Unknown attribute', $name);
+		}
+		return $this->attr_names[$name];
+	}
 
 	function __construct($dn, $attrs) {
+		$names = array_merge(static::$must, static::$may);
+		$this->attr_names = array_combine($names, $names) + static::$aliases;
+
 		$keys = array_keys($attrs);
 
 		# check that all MUST attributes are present
-		foreach (static::$must as $attr) {
-			$must_names = is_array($attr) ? $attr : array($attr);
-			if (!array_intersect($must_names, $keys)) {
-				throw new AttributeError(
-					'Missing required attribute', $must_names);
-			}
+		$real_keys = array_map(array($this, 'realName'), $keys);
+		$missing = array_diff(static::$must, $real_keys);
+		if ($missing) {
+			throw new AttributeError(
+				'Missing required attribute', $missing);
 		}
 
-		# check if all present attributes are MAY or MUST
-		$allowed = array_merge(static::$must, static::$may);
-		$allowed_names = array();
-		foreach ($allowed as $attr) {
-			if (is_array($attr)) {
-				foreach ($attr as $name) {
-					array_push($allowed_names, $name);
-				}
-			} else {
-				array_push($allowed_names, $attr);
-			}
-		}
-		$unknown = array_diff($keys, $allowed_names);
+		# check if all present attributes are MAY, MUST, or aliases thereof
+		$unknown = array_diff($keys, array_keys($this->attr_names));
 		if ($unknown) {
 			throw new AttributeError( 'Unknown attributes', $unknown);
 		}
 
 		$this->dn = $dn;
 
-		foreach ($attrs as $attr) {
-			foreach ($attr as $name) {
-				# alternative attribute names will point at the same object
-				$this->attrs[$name] = $attr;
-			};
+		foreach ($attrs as $name => $value) {
+			$this->attrs[$this->realName($name)] = $value;
 		}
 	}
 
 	function __get($name) {
-		return array_key_exists($name, $this->attrs) ?
-			$this->attrs[$name]->getValues() : null;
+		return $this->attrs[$this->realName($name)];
+	}
+
+	function __set($name, $value) {
+		$this->attrs[$this->realName($name)] = $value;
 	}
 
 	function __isset($name) {
@@ -77,13 +63,12 @@ abstract class LDAPObject {
 class InetOrgPerson extends LDAPObject {
 	static protected $must = array(
 		'cn',
-		array('sn', 'surname')
+		'surname'
 	);
 	static protected $may = array(
 		'description',
 		'displayName',
 		'givenName',
-		array('givenName', 'gn'),
 		'jpegPhoto',
 		'mail',
 		'manager',
@@ -92,5 +77,9 @@ class InetOrgPerson extends LDAPObject {
 		'title',
 		'uid',
 		'userPassword'
+	);
+	static protected $aliases = array(
+		'gn' => 'givenName',
+		'sn' => 'surname'
 	);
 }
