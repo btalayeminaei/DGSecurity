@@ -8,6 +8,6 @@ class LDAPObjectTest extends PHPUnit_Framework_TestCase {
 		);
 
 		$person = new ldap\InetOrgPerson($dn, $attrs);
-		$this->assertEquals(array('Doe'), $person->surname);
+		$this->assertEquals('Doe', $person->surname);
 	}
 }
