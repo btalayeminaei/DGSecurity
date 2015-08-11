@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="css/details.css">
+		<link rel="stylesheet" href="static/css/details.css">
 		<title></title>
 	</head>
 	<body>
 		<h1>Edit details</h1>
-		<img src="img/default.jpg" alt="Default photo" width="128" height="128" />
+		<img src="static/img/default.jpg" alt="Default photo" width="128" height="128" />
 		<form>
 			<fieldset>
 				<legend>Name</legend>
 				<span>
 					<label for="givenName">First</label>
-					<input type="text" id="givenName" required="required" />
+					<input type="text" id="givenName" required="required" value="{$givenName}" />
 				</span>
 				<span>
 					<label for="sn">Last</label>
