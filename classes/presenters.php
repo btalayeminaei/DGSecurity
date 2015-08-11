@@ -35,7 +35,7 @@ class Details implements IPresenter {
 	public function run() {
 		switch ($this->action) {
 		default:
-			$view = new views\View();
+			$view = new \views\Details();
 			$view->render($vars);
 		}
 	}

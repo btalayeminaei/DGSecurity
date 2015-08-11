@@ -60,6 +60,13 @@ abstract class LDAPObject {
 	function __isset($name) {
 		return array_key_exists($name, $this->attrs);
 	}
+
+	function getVars() {
+		$attrs = array_merge(static::$must, static::$may);
+		$filter = array_fill_keys($attrs, null);
+		$vars = array_intersect_key($this->attrs, $filter);
+		return $vars;
+	}
 }
 
 class InetOrgPerson extends LDAPObject {
