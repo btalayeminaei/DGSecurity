@@ -4,7 +4,9 @@ namespace ldap;
 class AttributeError extends \Exception {
 	public function __construct($msg, $attrs, $code = 0,
 		Exception $previous = null) {
-		$attrs = implode(', ', $attrs);
+		if (is_array($attrs)) {
+			$attrs = implode(', ', $attrs);
+		}
 		parent::__construct("$msg: $attrs", $code, $previous);
 	}
 }

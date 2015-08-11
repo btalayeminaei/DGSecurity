@@ -3,17 +3,19 @@ namespace presenters;
 
 class PresenterError extends \Exception { } 
 
-function getPresenter($get) {
-	$pres = strtolower($get['mode']);
+abstract class Factory {
+	public static function getPresenter($get) {
+		$pres = strtolower($get['mode']);
 
-	switch ($pres) {
-	case 'details':
-		$class = 'Details'; break;
-	default:
-		throw new PresenterError("Unknown mode: $pres");
-	};
+		switch ($pres) {
+		case 'details':
+			$class = '\presenters\Details'; break;
+		default:
+			throw new PresenterError("Unknown mode: $pres");
+		};
 
-	return new $class();
+		return new $class($get);
+	}
 }
 
 interface IPresenter {
@@ -25,7 +27,7 @@ class Details implements IPresenter {
 	protected $action;
 
 	public function __construct($get) {
-		if isset($get['action']) {
+		if (isset($get['action'])) {
 			$this->action = strtolower($get['action']);
 		}
 	}
