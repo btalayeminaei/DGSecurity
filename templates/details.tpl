@@ -16,50 +16,50 @@
 				</span>
 				<span>
 					<label for="sn">Last</label>
-					<input type="text" id="sn" required="required" />
+					<input type="text" id="sn" required="required" value="{$surname}" />
 				</span>
 				<span>
 					<label for="displayName">Display name</label>
-					<input type="text" id="displayName" />
+					<input type="text" id="displayName" value="{$displayName}" />
 				</span>
 			</fieldset>
 			<fieldset>
 				<legend>Position</legend>
 				<span>
 					<label for="title">Title</label>
-					<input type="text" id="title" required="required" placeholder="Regional Manager" />
+					<input type="text" id="title" required="required" placeholder="Regional Manager" value="{$title}" />
 				</span>
 			</fieldset>
 			<fieldset>
 				<legend>Email addresses</legend>
 				<span>
 					<label for="mail">Primary</label>
-					<input type="email" id="mail" disabled="disabled" />
+					<input type="email" id="mail" disabled="disabled" value="{$mail}" />
 				</span>
 			</fieldset>
 			<fieldset>
 				<legend>Phone numbers</legend>
 				<span>
 					<label for="mobile">Mobile</label>
-					<input type="text" id="mobile" placeholder="+1 555 123-45-67" />
+					<input type="text" id="mobile" placeholder="+1 555 123-45-67" value="{$mobile}" />
 				</span>
 				<span>
 					<label for="telephoneNumber">Office</label>
-					<input type="text" id="telephoneNumber" placeholder="+1 555 987-65-43" />
+					<input type="text" id="telephoneNumber" placeholder="+1 555 987-65-43" value="{$telephoneNumber}" />
 				</span>
 			</fieldset>
 			<fieldset>
 				<legend>Login credentials</legend>
 				<span>
 					<label for="cn">Username</label>
-					<input type="text" id="cn" disabled="disabled" />
+					<input type="text" id="cn" disabled="disabled" value="{$uid}" />
 				</span>
 				<span>
 					<label for="userPassword">Password</label>
 					<input type="password" id="userPassword" required="required" />
 				</span>
 				<span>
-					<label for="repeatPassword">Repeat</label>
+					<label for="repeatPassword">Repeat password</label>
 					<input type="password" id="repeatPassword" required="required" />
 				</span>
 			</fieldset>
