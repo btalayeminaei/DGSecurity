@@ -37,5 +37,10 @@ class Connection {
 		$result = ldap_read($this->conn, $dn, $filter, $attrs,
 			0, 0, 0, LDAP_DEREF_FINDING);
 		if (!$result) throw new LDAPError($this->conn);
+
+		$entries = ldap_get_entries($this->conn, $result);
+		if ($entries === false) throw new LDAPError($this->conn);
+
+		return $entries[0];
 	}
 }
