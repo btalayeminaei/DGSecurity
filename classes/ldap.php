@@ -19,14 +19,23 @@ class Connection {
 
 	function __construct($host, $port, $rdn, $password) {
 		$this->conn = ldap_connect($host, $port);
-		$bound = ldap_bind($this->conn, $rdn, $password);
-		if (!$bound) {
-			throw new LDAPError($this->conn);
-		}
+
+		$result = ldap_bind($this->conn, $rdn, $password);
+		if (!$result) throw new LDAPError($this->conn);
+
+		ldap_set_option($this->conn, LDAP_OPT_PROTOCOL_VERSION, 3)
+		if (!$result) throw new LDAPError($this->conn);
 	}
 
 	function __destruct() {
 		ldap_unbind($this->conn);
 		ldap_close($this->conn);
+	}
+
+	public function read($dn, $attrs) {
+		$filter = '(objectClass=*)';
+		$result = ldap_read($this->conn, $dn, $filter, $attrs,
+			0, 0, 0, LDAP_DEREF_FINDING);
+		if (!$result) throw new LDAPError($this->conn);
 	}
 }
