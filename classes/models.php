@@ -1,5 +1,5 @@
 <?php
-namespace ldap;
+namespace models;
 
 class AttributeError extends \Exception {
 	public function __construct($msg, $attrs, $code = 0,

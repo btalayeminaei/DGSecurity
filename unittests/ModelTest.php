@@ -1,25 +1,25 @@
 <?php
 class InvalidLDAPObjectTest extends PHPUnit_Framework_TestCase {
 	public function testBadAttribute() {
-		$this->setExpectedException('\ldap\AttributeError');
+		$this->setExpectedException('\models\AttributeError');
 
 		$dn = 'cn=jdoe,dc=example,dc=org';
 		$attrs = array(
 			'cn' => 'jdoe',
 			'foo' => 'bar' # unknown attribute
 		);
-		$person = new \ldap\InetOrgPerson($dn, $attrs);
+		$person = new \models\InetOrgPerson($dn, $attrs);
 	}
 
 	public function testMissingAttribute() {
-		$this->setExpectedException('\ldap\AttributeError');
+		$this->setExpectedException('\models\AttributeError');
 
 		$dn = 'cn=jdoe,dc=example,dc=org';
 		$attrs = array(
 			'cn' => 'jdoe'
 			# missing sn attribute
 		);
-		$person = new \ldap\InetOrgPerson($dn, $attrs);
+		$person = new \models\InetOrgPerson($dn, $attrs);
 	}
 }
 
@@ -32,7 +32,7 @@ class LDAPObjectTest extends PHPUnit_Framework_TestCase {
 			'cn' => 'jdoe',
 			'sn' => 'Doe'
 		);
-		$this->person = new \ldap\InetOrgPerson($dn, $attrs);
+		$this->person = new \models\InetOrgPerson($dn, $attrs);
 	}
 
 	public function testAttribute() {
