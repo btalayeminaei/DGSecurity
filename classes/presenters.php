@@ -3,6 +3,12 @@ namespace presenters;
 
 class PresenterError extends \Exception { } 
 
+class SecurityError extends \Exception {
+	public function display() {
+		http_response_code(403);
+	}
+}
+
 abstract class Factory {
 	public static function getPresenter($get) {
 		$pres = strtolower($get['mode']);
