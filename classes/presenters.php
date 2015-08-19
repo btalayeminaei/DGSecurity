@@ -4,11 +4,14 @@ namespace presenters;
 class PresenterError extends \Exception { } 
 
 class SecurityError extends \Exception {
-	public function failLogin() {
-		http_response_code(403);
-	}
-
-	public function showLogin() {
+	public function forceLogin() {
+		http_response_code(302);
+		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+		$server = $_SERVER['SERVER_NAME'];
+		$uri = '/login';
+		$login_url = "$scheme://$server$uri";
+		header("Location: $login_url");
+		exit("Please log in at $login_url");
 	}
 }
 
@@ -33,10 +36,15 @@ interface IPresenter {
 }
 
 abstract class Presenter implements IPresenter {
-	protected $get;
+	protected $get, $user;
 
 	function __construct($get) {
 		$this->get = $get;
+		try {
+			$this->user =
+		} catch (SecurityError $e) {
+			$e->forceLogin();
+		}
 	}
 
 	protected function getAction() {
@@ -61,16 +69,18 @@ class Details extends Presenter implements IPresenter {
 class Login implements IPresenter {
 	public function run() {
 		switch ($this->getAction()) {
+		case 'login':
+			break;
+		default:
+			# display
 		}
 	}
 
+	public function authenticate($user, $pass) {
+		require_once 'settings.php';
+		$conn = new Connection($host, $port, $user, $pass);
+	}
+
 	public function redirect() {
-		http_response_code(302);
-		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
-		$server = $_SERVER['SERVER_NAME'];
-		$uri = '/login';
-		$login_url = "$scheme://$server$uri";
-		header("Location: $login_url");
-		echo "Please log in at $login_url";
 	}
 }
