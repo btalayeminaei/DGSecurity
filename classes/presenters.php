@@ -34,12 +34,12 @@ interface IPresenter {
 }
 
 abstract class Presenter implements IPresenter {
-	protected $get, $dn;
+	protected $get, $user;
 
 	function __construct($get) {
 		$this->get = $get;
 		try {
-			$this->dn = Factory::getDN();
+			$this->user = Factory::getUsername();
 		} catch (SecurityError $e) {
 			$return = urlencode($_GET['redirect']);
 			$this->redirectFound("/login?redirect=$return");
