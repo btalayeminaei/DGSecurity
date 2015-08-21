@@ -3,7 +3,15 @@ namespace presenters;
 
 class PresenterError extends \Exception { } 
 
-class SecurityError extends \Exception { }
+class SecurityError extends \Exception {
+	protected $return;
+
+	function __construct($return_uri = null) {
+		if ($return_uri) {
+		} else {
+		}
+	}
+}
 
 abstract class Factory {
 	public static function getPresenter($get) {
