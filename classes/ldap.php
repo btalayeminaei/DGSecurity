@@ -44,5 +44,3 @@ class Connection {
 		return $entries[0];
 	}
 }
-
-class User

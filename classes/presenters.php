@@ -3,17 +3,7 @@ namespace presenters;
 
 class PresenterError extends \Exception { } 
 
-class SecurityError extends \Exception {
-	public function forceLogin() {
-		http_response_code(302);
-		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
-		$server = $_SERVER['SERVER_NAME'];
-		$uri = '/login';
-		$login_url = "$scheme://$server$uri";
-		header("Location: $login_url");
-		exit("Please log in at $login_url");
-	}
-}
+class SecurityError extends \Exception { }
 
 abstract class Factory {
 	public static function getPresenter($get) {
@@ -28,6 +18,14 @@ abstract class Factory {
 
 		return new $class($get);
 	}
+
+	public static function getUsername() {
+		if (isset($_SESSION['user'])) {
+			return $_SESSION['user'];
+		} else {
+			throw new SecurityError();
+		}
+	}
 }
 
 interface IPresenter {
@@ -36,15 +34,25 @@ interface IPresenter {
 }
 
 abstract class Presenter implements IPresenter {
-	protected $get, $user;
+	protected $get, $dn;
 
 	function __construct($get) {
 		$this->get = $get;
 		try {
-			$this->user =
+			$this->dn = Factory::getDN();
 		} catch (SecurityError $e) {
-			$e->forceLogin();
+			$return = urlencode($_GET['redirect']);
+			$this->redirectFound("/login?redirect=$return");
 		}
+	}
+
+	private function redirectFound($uri) {
+		http_response_code(302);
+		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+		$server = $_SERVER['SERVER_NAME'];
+		$login_url = "$scheme://$server$uri";
+		header("Location: $login_url");
+		exit("Please proceed to $login_url");
 	}
 
 	protected function getAction() {
@@ -70,17 +78,20 @@ class Login implements IPresenter {
 	public function run() {
 		switch ($this->getAction()) {
 		case 'login':
+			require_once 'settings.php';
+			try {
+				$user = $_POST['user'];
+				$pass = $_POST['password'];
+				$conn = new \ldap\Connection($host, $port, $user, $pass);
+			} catch (\ldap\LDAPError $e) {
+				$this->showLogin('Username or password incorrect');
+			}
 			break;
 		default:
-			# display
+			$this->showLogin();
 		}
 	}
 
-	public function authenticate($user, $pass) {
-		require_once 'settings.php';
-		$conn = new Connection($host, $port, $user, $pass);
-	}
-
-	public function redirect() {
+	private function showLogin($msg = null) {
 	}
 }
