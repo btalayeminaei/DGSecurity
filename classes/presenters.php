@@ -76,7 +76,7 @@ class Details extends Presenter implements IPresenter {
 	public function run() {
 		switch ($this->getAction()) {
 		default:
-			$view = new \views\Details();
+			$view = new \views\SmartyView();
 			$view->render($vars);
 		}
 	}
@@ -101,5 +101,8 @@ class Login implements IPresenter {
 	}
 
 	private function showLogin($msg = null) {
+		$vars = array('msg' => $msg);
+		$view = new \views\Login();
+		$view->render($vars);
 	}
 }

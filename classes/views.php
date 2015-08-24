@@ -2,16 +2,16 @@
 namespace views;
 require_once("smarty3/Smarty.class.php");
 
-interface IView {
-	function render($vars);
-}
+class SmartyView {
+	protected $tpl;
 
-class Details implements IView {
+	function __construct($template_name) {
+		$this->tpl = strtolower($template_name) . '.tpl';
+	}
+
 	function render($vars) {
-		$path = explode('\\', get_class($this));
-		$tpl = strtolower(end($path)) . '.tpl';
 		$smarty = new \Smarty();
 		$smarty->assign($vars);
-		$smarty->display($tpl);
+		$smarty->display($this->tpl);
 	}
 }
