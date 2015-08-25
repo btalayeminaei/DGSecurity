@@ -49,8 +49,12 @@ abstract class Presenter implements IPresenter {
 		try {
 			$this->user = Factory::getUsername();
 		} catch (SecurityError $e) {
-			$return = urlencode($_GET['redirect']);
-			$this->redirectFound("/login?redirect=$return");
+			if (isset($_GET['redirect'])) {
+				$return = '?redirect=' . urlencode($_GET['redirect']);
+			} else {
+				$return = '';
+			}
+			$this->redirectFound("/login$return");
 		}
 	}
 
@@ -70,6 +74,7 @@ abstract class Presenter implements IPresenter {
 			$action = null;
 		}
 		return $action;
+	}
 }
 
 class Details extends Presenter implements IPresenter {
@@ -83,6 +88,10 @@ class Details extends Presenter implements IPresenter {
 }
 
 class Login implements IPresenter {
+	function __construct($get) {
+		$this->get = $get;
+	}
+
 	public function run() {
 		switch ($this->getAction()) {
 		case 'login':
