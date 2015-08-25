@@ -7,7 +7,9 @@ interface IPresenter {
 
 abstract class Factory {
 	public static function getPresenter() {
-		$mode = strtolower($_GET['mode']);
+		$mode = isset($_GET['mode']) ?
+			strtolower($_GET['mode']) :
+			'details';
 
 		switch ($mode) {
 		case 'details':
