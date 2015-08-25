@@ -14,7 +14,7 @@ abstract class Factory {
 			$pres = new \presenters\Details();
 			break;
 		default:
-			throw new PresenterError("Unknown mode: $pres");
+			throw new PresenterError("Unknown mode: $mode");
 		};
 
 		return $pres;
@@ -62,10 +62,6 @@ class Details extends Presenter implements IPresenter {
 }
 
 class Login implements IPresenter {
-	function __construct($get) {
-		$this->get = $get;
-	}
-
 	public function run() {
 		switch ($_SERVER['REQUEST_METHOD']) {
 		case 'POST':

@@ -1,25 +1,25 @@
 <?php
 class FactoryTest extends PHPUnit_Framework_TestCase {
 	public function testFactory() {
-		$get = array(
+		$_SESSION = array('user' => 'nsure');
+		$_GET = array(
 			'mode' => 'details',
 			'action' => 'show'
 		);
-		$pres = \presenters\Factory::getPresenter($get);
+
+		$pres = \presenters\Factory::getPresenter();
 		$this->assertInstanceOf('\presenters\Details', $pres);
 	}
 
 	public function testFactoryException() {
 		$this->setExpectedException('\presenters\PresenterError');
-		$get = array(
+
+		$_SESSION = array('user' => 'nsure');
+		$_GET = array(
 			'mode' => 'foobar',
 			'action' => 'show'
 		);
-		$pres = \presenters\Factory::getPresenter($get);
-	}
-}
 
-class PresenterTest extends PHPUnit_Framework_TestCase {
-	public function setUp() {
+		$pres = \presenters\Factory::getPresenter();
 	}
 }
