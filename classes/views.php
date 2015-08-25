@@ -15,3 +15,20 @@ class SmartyView {
 		$smarty->display($this->tpl);
 	}
 }
+
+class Redirect {
+	protected $url;
+
+	function __construct($uri) {
+		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+		$server = $_SERVER['SERVER_NAME'];
+		$this->url = "$scheme://$server$uri";
+	}
+
+	public function found() {
+		http_response_code(302);
+		$url = $this->url;
+		header("Location: $url");
+		exit("Please proceed to $url");
+	}
+}

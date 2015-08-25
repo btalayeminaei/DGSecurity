@@ -1,5 +1,5 @@
 <?php
-class PresenterTest extends PHPUnit_Framework_TestCase {
+class FactoryTest extends PHPUnit_Framework_TestCase {
 	public function testFactory() {
 		$get = array(
 			'mode' => 'details',
@@ -16,5 +16,10 @@ class PresenterTest extends PHPUnit_Framework_TestCase {
 			'action' => 'show'
 		);
 		$pres = \presenters\Factory::getPresenter($get);
+	}
+}
+
+class PresenterTest extends PHPUnit_Framework_TestCase {
+	public function setUp() {
 	}
 }
