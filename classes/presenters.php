@@ -12,12 +12,12 @@ abstract class Factory {
 			'/details';
 
 		switch ($mode) {
-		case '/details':
-			$pres = new Details();
-			break;
 		case '/':
 		case '/login':
 			$pres = new Login();
+			break;
+		case '/details':
+			$pres = new Details();
 			break;
 		default:
 			throw new PresenterError("Unknown mode: $mode");
