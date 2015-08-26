@@ -67,10 +67,11 @@ class Login implements IPresenter {
 				$pass = $_POST['password'];
 				$conn = new \ldap\Connection($user, $pass);
 				$_SESSION['dn'] = $conn->getDN();
+				$_SESSION['pass'] = $pass;
 			} catch (\ldap\LDAPAuthError $e) {
 				$this->showLogin('Username or password incorrect');
+				break;
 			}
-			break;
 		default:
 			if (isset($_SESSION['dn'])) {
 				$r = new \views\Redirect('/details');
