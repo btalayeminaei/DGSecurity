@@ -7,7 +7,9 @@
 	<body>
 		<h1>Log in to DG security console</h1>
 		<div class="wrapper">
-			<div class="error">Username or password wrong</div>
+			{if isset($msg) }
+			<div class="error">$msg</div>
+			{/if}
 			<form action="/login">
 				<table>
 					<tr>
