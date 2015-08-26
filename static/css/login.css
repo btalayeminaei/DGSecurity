@@ -1,34 +1,35 @@
-form.login {
-	display: table;
+.wrapper {
 	width: 18em;
 	margin: auto;
 }
 
-form.login div {
-	display: table-row;
-}
-
-form.login span {
-	display: table-cell;
-	padding: .75ex 0;
-}
-
-form.login span * {
+table, td *, form {
 	width: 100%;
 }
 
-form.login div:last-child {
-	display: table-caption;
-	caption-side: bottom;
-	text-align: right;
+button {
+	float: right;
+	margin-bottom: 3ex;
 }
 
 footer {
 	font-size: smaller;
 	text-align: center;
-	margin-top: 5ex;
+	margin-top: 3ex;
+	clear: both;
 }
 
 h1 {
 	text-align: center;
+}
+
+.error {
+	text-align: center;
+	color: #c00;
+	border-color: #c00;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 1ex;
+	margin: 3ex auto;
+	line-height: 200%;
 }

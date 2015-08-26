@@ -8,7 +8,7 @@ interface IPresenter {
 abstract class Factory {
 	public static function getPresenter() {
 		$mode = isset($_SERVER['REQUEST_URI']) ?
-			strtolower($_SERVER['REQUEST_URI']) :
+			parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) :
 			'/details';
 
 		switch ($mode) {
