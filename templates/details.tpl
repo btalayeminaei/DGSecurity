@@ -41,11 +41,11 @@
 				<legend>Phone numbers</legend>
 				<span>
 					<label for="mobile">Mobile</label>
-					<input type="text" id="mobile" placeholder="+1 555 123-45-67" value="{$mobile}" />
+					<input type="text" id="mobile" placeholder="+1 555 123-4567" value="{$mobile}" />
 				</span>
 				<span>
 					<label for="telephoneNumber">Office</label>
-					<input type="text" id="telephoneNumber" placeholder="+1 555 987-65-43" value="{$telephoneNumber}" />
+					<input type="text" id="telephoneNumber" placeholder="+1 555 987-6543" value="{$telephoneNumber}" />
 				</span>
 			</fieldset>
 			<fieldset>

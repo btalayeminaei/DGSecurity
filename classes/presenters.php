@@ -28,11 +28,11 @@ abstract class Factory {
 }
 
 abstract class Presenter implements IPresenter {
-	protected $user;
+	protected $dn;
 
 	function __construct() {
-		if (isset($_SESSION['user'])) {
-			$this->user = $_SESSION['user'];
+		if (isset($_SESSION['dn'])) {
+			$this->user = $_SESSION['dn'];
 		} else {
 			throw new SecurityError();
 		}
@@ -62,17 +62,17 @@ class Login implements IPresenter {
 	public function run() {
 		switch ($_SERVER['REQUEST_METHOD']) {
 		case 'POST':
-			require_once 'settings.php';
 			try {
-				$user = $_POST['user'];
+				$user = $_POST['username'];
 				$pass = $_POST['password'];
-				$conn = new \ldap\Connection($host, $port, $user, $pass);
-			} catch (\ldap\LDAPError $e) {
+				$conn = new \ldap\Connection($user, $pass);
+				$_SESSION['dn'] = $conn->getDN();
+			} catch (\ldap\LDAPAuthError $e) {
 				$this->showLogin('Username or password incorrect');
 			}
 			break;
 		default:
-			if (isset($_SESSION['user'])) {
+			if (isset($_SESSION['dn'])) {
 				$r = new \views\Redirect('/details');
 				$r->found();
 			} else {
