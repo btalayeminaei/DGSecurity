@@ -7,13 +7,17 @@ interface IPresenter {
 
 abstract class Factory {
 	public static function getPresenter() {
-		$mode = isset($_GET['mode']) ?
-			strtolower($_GET['mode']) :
-			'details';
+		$mode = isset($_SERVER['REQUEST_URI']) ?
+			strtolower($_SERVER['REQUEST_URI']) :
+			'/details';
 
 		switch ($mode) {
-		case 'details':
-			$pres = new \presenters\Details();
+		case '/details':
+			$pres = new Details();
+			break;
+		case '/':
+		case '/login':
+			$pres = new Login();
 			break;
 		default:
 			throw new PresenterError("Unknown mode: $mode");
