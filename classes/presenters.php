@@ -53,17 +53,8 @@ class SecurityError extends \Exception {
 
 class Details extends Presenter implements IPresenter {
 	public function run() {
-		if (isset($_GET['action'])) {
-			$action = strtolower($_GET['action']);
-		} else {
-			$action = null;
-		}
-
-		switch ($action) {
-		default:
-			$view = new \views\SmartyView('details');
-			$view->render($vars);
-		}
+		$view = new \views\SmartyView('details');
+		$view->render($vars);
 	}
 }
 
@@ -81,7 +72,12 @@ class Login implements IPresenter {
 			}
 			break;
 		default:
-			$this->showLogin();
+			if (isset($_SESSION['user'])) {
+				$r = new \views\Redirect('/details');
+				$r->found();
+			} else {
+				$this->showLogin();
+			}
 		}
 	}
 
