@@ -28,11 +28,12 @@ abstract class Factory {
 }
 
 abstract class Presenter implements IPresenter {
-	protected $dn;
+	protected $user, $pass;
 
 	function __construct() {
-		if (isset($_SESSION['dn'])) {
-			$this->user = $_SESSION['dn'];
+		if (isset($_SESSION['user'])) {
+			$this->user = $_SESSION['user'];
+			$this->pass = $_SESSION['pass'];
 		} else {
 			throw new SecurityError();
 		}
@@ -53,12 +54,22 @@ class SecurityError extends \Exception {
 
 class Details extends Presenter implements IPresenter {
 	public function run() {
+		if (!session_start()) {
+			throw new \Exception('Cannot start a session');
+		}
+		$this->user = $_SESSION['user'];
+		$this->pass = $_SESSION['pass'];
+		$conn = new \ldap\Connection($this->user, $this->pass);
+
 		$view = new \views\SmartyView('details');
 		$view->render($vars);
 	}
 }
 
 class Login implements IPresenter {
+	# override parent constructor
+	function __construct() { }
+
 	public function run() {
 		switch ($_SERVER['REQUEST_METHOD']) {
 		case 'POST':
@@ -66,14 +77,17 @@ class Login implements IPresenter {
 				$user = $_POST['username'];
 				$pass = $_POST['password'];
 				$conn = new \ldap\Connection($user, $pass);
-				$_SESSION['dn'] = $conn->getDN();
+				if (!session_start()) {
+					throw new \Exception('Cannot start a session');
+				}
+				$_SESSION['user'] = $user;
 				$_SESSION['pass'] = $pass;
 			} catch (\ldap\LDAPAuthError $e) {
 				$this->showLogin('Username or password incorrect');
 				break;
 			}
 		default:
-			if (isset($_SESSION['dn'])) {
+			if (isset($_SESSION['user'])) {
 				$r = new \views\Redirect('/details');
 				$r->found();
 			} else {
