@@ -20,7 +20,7 @@ class Connection {
 	protected $conn, $dn, $filter, $base;
 
 	function __construct($user, $pass) {
-		require_once 'settings.php';
+		require 'settings.php';
 		$this->base = $base;
 		$this->filter = $filter;
 
