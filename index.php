@@ -5,7 +5,7 @@ require_once('settings.php');
 require_once('autoload.php');
 
 try {
-	$pres = \presenters\Factory::getPresenter($_GET);
+	$pres = \presenters\Factory::getPresenter();
 	$pres->run();
 } catch (\presenters\SecurityError $e) {
 	$e->handle();

@@ -10,7 +10,7 @@
 			{if isset($msg) }
 			<div class="error">$msg</div>
 			{/if}
-			<form action="/login">
+			<form action="/login" method="post" autocomplete="off"><!-- debug -->
 				<table>
 					<tr>
 						<td><label for="username">Username</label></td>
