@@ -10,15 +10,15 @@
 			{if isset($msg) }
 			<div class="error">$msg</div>
 			{/if}
-			<form action="/login" method="post" autocomplete="off"><!-- debug -->
+			<form action="/login" method="post">
 				<table>
 					<tr>
 						<td><label for="username">Username</label></td>
-						<td><input type="text" id="username" required="required" /></td>
+						<td><input type="text" name="username" id="username" required="required" value="ssemenukha" /></td><!-- debug -->
 					</tr>
 					<tr>
 						<td><label for="password">Password</label></td>
-						<td><input type="password" id="password" required="required" /></td>
+						<td><input type="password" name="password" id="password" required="required" value="toor" /></td><!-- debug -->
 					</tr>
 				</table>
 				<button type="submit">Log in</button>

@@ -28,7 +28,7 @@ class Connection {
 		if ($this->conn === false)
 			throw new LDAPSrvErr('Could not connect to LDAP server');
 
-		ldap_set_option($this->conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+		$result = ldap_set_option($this->conn, LDAP_OPT_PROTOCOL_VERSION, 3);
 		if (!$result) throw new LDAPSrvErr($this->conn);
 
 		$this->dn = $this->getDN($user);
