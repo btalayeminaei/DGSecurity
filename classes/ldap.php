@@ -22,7 +22,8 @@ class Connection {
 	function __construct($user, $pass) {
 		require 'settings.php';
 		$this->base = $base;
-		$this->filter = $filter;
+		$safe_user = ldap_escape($user, '', LDAP_ESCAPE_FILTER);
+		$this->filter = sprintf($filter, $safe_user);
 
 		$this->conn = ldap_connect($host, $port);
 		if ($this->conn === false)
@@ -31,7 +32,7 @@ class Connection {
 		$result = ldap_set_option($this->conn, LDAP_OPT_PROTOCOL_VERSION, 3);
 		if (!$result) throw new LDAPSrvErr($this->conn);
 
-		$this->dn = $this->getDN($user);
+		$this->dn = $this->getDN();
 
 		# re-bind with the DN found
 		$result = ldap_bind($this->conn, $this->dn, $pass);
@@ -40,22 +41,21 @@ class Connection {
 
 	function __destruct() {
 		ldap_unbind($this->conn);
-		ldap_close($this->conn);
 	}
 
-	private function getDN($user) {
+	private function getDN() {
 		# bind anonymously first and search for the RDN
 		$result = ldap_bind($this->conn);
-		if ($result === false)
-			throw new LDAPSrvErr($this->conn);
+		if ($result === false) throw new LDAPSrvErr($this->conn);
 
-		$query = sprintf($this->filter, ldap_escape($user, '', LDAP_ESCAPE_FILTER));
-		$entries = ldap_search($this->conn, $this->base, $this->filter,
+		$result = ldap_search($this->conn, $this->base, $this->filter,
 			array(), 1, 1, 0, LDAP_DEREF_ALWAYS);
-		if ($entries === false)
-			throw new LDAPSrvErr($this->conn);
+		if ($result === false) throw new LDAPSrvErr($this->conn);
 
-		return $result[0]['dn'];
+		$entries = ldap_get_entries($this->conn, $result);
+		if ($entries === false) throw new LDAPSrvErr($this->conn);
+
+		return $entries[0]['dn'];
 	}
 
 	public function read($dn = null) {
