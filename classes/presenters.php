@@ -31,6 +31,9 @@ abstract class Presenter implements IPresenter {
 	protected $user, $pass;
 
 	function __construct() {
+		if (!session_start()) {
+			throw new \Exception('Cannot start a session');
+		}
 		if (isset($_SESSION['user'])) {
 			$this->user = $_SESSION['user'];
 			$this->pass = $_SESSION['pass'];
@@ -54,9 +57,6 @@ class SecurityError extends \Exception {
 
 class Details extends Presenter implements IPresenter {
 	public function run() {
-		if (!session_start()) {
-			throw new \Exception('Cannot start a session');
-		}
 		$this->user = $_SESSION['user'];
 		$this->pass = $_SESSION['pass'];
 		$conn = new \ldap\Connection($this->user, $this->pass);
@@ -87,6 +87,9 @@ class Login implements IPresenter {
 				break;
 			}
 		default:
+			if (!session_start()) {
+				throw new \Exception('Cannot start a session');
+			}
 			if (isset($_SESSION['user'])) {
 				$r = new \views\Redirect('/details');
 				$r->found();
