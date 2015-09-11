@@ -8,7 +8,7 @@
 		<h1>Log in to DG security console</h1>
 		<div class="wrapper">
 			{if isset($msg) }
-			<div class="error">$msg</div>
+			<div class="error">{$msg}</div>
 			{/if}
 			<form action="/login" method="post">
 				<table>

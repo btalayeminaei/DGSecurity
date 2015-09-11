@@ -49,7 +49,7 @@ class Connection {
 		if ($result === false)
 			throw new LDAPSrvErr($this->conn);
 
-		$query = sprintf($filter, ldap_escape($user, '', LDAP_ESCAPE_FILTER));
+		$query = sprintf($this->filter, ldap_escape($user, '', LDAP_ESCAPE_FILTER));
 		$entries = ldap_search($this->conn, $this->base, $this->filter,
 			array(), 1, 1, 0, LDAP_DEREF_ALWAYS);
 		if ($entries === false)
