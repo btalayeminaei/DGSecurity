@@ -61,6 +61,8 @@ class Details extends Presenter implements IPresenter {
 		$this->pass = $_SESSION['pass'];
 		$conn = new \ldap\Connection($this->user, $this->pass);
 
+		$vars = $conn->read();
+
 		$view = new \views\SmartyView('details');
 		$view->render($vars);
 	}
