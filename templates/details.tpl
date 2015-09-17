@@ -11,16 +11,16 @@
 			<fieldset>
 				<legend>Name</legend>
 				<span>
-					<label for="givenName">First</label>
-					<input type="text" id="givenName" required="required" value="{$givenName}" />
+					<label for="givenname">First</label>
+					<input type="text" id="givenname" required="required" value="{$givenname}" />
 				</span>
 				<span>
 					<label for="sn">Last</label>
 					<input type="text" id="sn" required="required" value="{$surname}" />
 				</span>
 				<span>
-					<label for="displayName">Display name</label>
-					<input type="text" id="displayName" value="{$displayName}" />
+					<label for="displayname">Display name</label>
+					<input type="text" id="displayname" value="{$displayname}" />
 				</span>
 			</fieldset>
 			<fieldset>
@@ -44,8 +44,8 @@
 					<input type="text" id="mobile" placeholder="+1 555 123-4567" value="{$mobile}" />
 				</span>
 				<span>
-					<label for="telephoneNumber">Office</label>
-					<input type="text" id="telephoneNumber" placeholder="+1 555 987-6543" value="{$telephoneNumber}" />
+					<label for="telephonenumber">Office</label>
+					<input type="text" id="telephonenumber" placeholder="+1 555 987-6543" value="{$telephonenumber}" />
 				</span>
 			</fieldset>
 			<fieldset>
@@ -55,12 +55,12 @@
 					<input type="text" id="cn" disabled="disabled" value="{$uid}" />
 				</span>
 				<span>
-					<label for="userPassword">Password</label>
-					<input type="password" id="userPassword" required="required" />
+					<label for="userpassword">Password</label>
+					<input type="password" id="userpassword" required="required" />
 				</span>
 				<span>
-					<label for="repeatPassword">Repeat password</label>
-					<input type="password" id="repeatPassword" required="required" />
+					<label for="repeatpassword">Repeat password</label>
+					<input type="password" id="repeatpassword" required="required" />
 				</span>
 			</fieldset>
 			<button type="submit">Save</button>

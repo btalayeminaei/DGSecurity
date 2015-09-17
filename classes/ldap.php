@@ -69,6 +69,19 @@ class Connection {
 		$entries = ldap_get_entries($this->conn, $result);
 		if ($entries === false) throw new LDAPAuthError();
 
-		return $entries[0];
+		return $this->flatten($entries[0]);
+	}
+
+	private function flatten($entry) {
+		$count = $entry['count'];
+		$result = array();
+
+		for ($i = 0; $i < $count; $i++) {
+			$key = $entry[$i];
+			$val = $entry[$key][0];
+			$result[$key] = $val;
+		}
+
+		return $result;
 	}
 }
