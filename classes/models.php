@@ -43,6 +43,9 @@ abstract class LDAPObject implements ArrayAccess {
 	}
 
 	public toArray() {
+		$attrs = array_fill_keys(static::$attr_names, NULL);
+		$filter = array_change_key_case($attrs, CASE_LOWER);
+		return array_intersect_key($this->attrs, $filter);
 	}
 }
 
