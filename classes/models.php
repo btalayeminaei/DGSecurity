@@ -11,70 +11,37 @@ class AttributeError extends \Exception {
 	}
 }
 
-abstract class LDAPObject {
-	static protected $must = array(), $may = array(), $aliases = array();
-	protected $dn, $attrs, $attr_names;
+abstract class LDAPObject implements ArrayAccess {
+	static protected $attr_names, $aliases;
+	protected $dn, $attrs;
 
-	private function realName($name) {
-		if ( !array_key_exists($name, $this->attr_names) ) {
-			throw new AttributeError( 'Unknown attribute', $name);
-		}
-		return $this->attr_names[$name];
-	}
-
-	function __construct($dn, $attrs) {
-		$names = array_merge(static::$must, static::$may);
-		$this->attr_names = array_combine($names, $names) + static::$aliases;
-
-		$keys = array_keys($attrs);
-
-		# check that all MUST attributes are present
-		$real_keys = array_map(array($this, 'realName'), $keys);
-		$missing = array_diff(static::$must, $real_keys);
-		if ($missing) {
-			throw new AttributeError(
-				'Missing required attribute', $missing);
-		}
-
-		# check if all present attributes are MAY, MUST, or aliases thereof
-		$unknown = array_diff($keys, array_keys($this->attr_names));
-		if ($unknown) {
-			throw new AttributeError( 'Unknown attributes', $unknown);
-		}
-
+	__construct($dn, $aliases = NULL) {
 		$this->dn = $dn;
-
-		foreach ($attrs as $name => $value) {
-			$this->attrs[$this->realName($name)] = $value;
+		$this->attrs = array_fill_keys($this->attr_names, NULL);
+		if ( is_array($aliases) ) {
+			foreach ($aliases as $alias => $target) {
+				$this->attrs[$alias] = &$this->attrs[$target];
+			}
 		}
 	}
 
-	function __get($name) {
-		return $this->attrs[$this->realName($name)];
+	public offsetExists($offset) {
 	}
 
-	function __set($name, $value) {
-		$this->attrs[$this->realName($name)] = $value;
+	public offsetGet($offset) {
 	}
 
-	function __isset($name) {
-		return array_key_exists($name, $this->attrs);
+	public offsetSet($offset, $value) {
 	}
 
-	function getVars() {
-		$attrs = array_merge(static::$must, static::$may);
-		$filter = array_fill_keys($attrs, null);
-		$vars = array_intersect_key($this->attrs, $filter);
-		return $vars;
+	public offsetUnset($offset) {
 	}
 }
 
 class InetOrgPerson extends LDAPObject {
-	static protected $must = array(
+	static protected $attr_names = array(
 		'cn',
-		'surname'
-	);
-	static protected $may = array(
+		'surname',
 		'description',
 		'displayName',
 		'givenName',
@@ -87,6 +54,7 @@ class InetOrgPerson extends LDAPObject {
 		'uid',
 		'userPassword'
 	);
+
 	static protected $aliases = array(
 		'gn' => 'givenName',
 		'sn' => 'surname'
