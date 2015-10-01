@@ -47,6 +47,12 @@ abstract class LDAPObject implements ArrayAccess {
 		$filter = array_change_key_case($attrs, CASE_LOWER);
 		return array_intersect_key($this->attrs, $filter);
 	}
+
+	public function fromArray($arr) {
+		foreach ($arr as $name => $value) {
+			$self[$name] = $value;
+		}
+	}
 }
 
 class InetOrgPerson extends LDAPObject {
