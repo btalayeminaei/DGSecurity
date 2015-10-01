@@ -15,7 +15,7 @@ abstract class LDAPObject implements ArrayAccess {
 	static protected $attr_names, $aliases;
 	protected $dn, $attrs;
 
-	__construct($dn) {
+	function __construct($dn) {
 		$this->dn = $dn;
 		$attrs = array_fill_keys(static::$attr_names, NULL);
 		$this->attrs = array_change_key_case($attrs, CASE_LOWER);
@@ -26,23 +26,23 @@ abstract class LDAPObject implements ArrayAccess {
 		}
 	}
 
-	public offsetExists($offset) {
+	public function offsetExists($offset) {
 		return array_key_exists(strtolower($offset), $this->attrs);
 	}
 
-	public offsetGet($offset) {
+	public function offsetGet($offset) {
 		return $this->attrs[strtolower($offset)];
 	}
 
-	public offsetSet($offset, $value) {
+	public function offsetSet($offset, $value) {
 		$this->attrs[strtolower($offset)] = $value;
 	}
 
-	public offsetUnset($offset) {
+	public function offsetUnset($offset) {
 		$this->attrs[strtolower($offset)] = NULL;
 	}
 
-	public toArray() {
+	public function toArray() {
 		$attrs = array_fill_keys(static::$attr_names, NULL);
 		$filter = array_change_key_case($attrs, CASE_LOWER);
 		return array_intersect_key($this->attrs, $filter);
