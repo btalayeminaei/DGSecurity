@@ -11,7 +11,7 @@ class AttributeError extends \Exception {
 	}
 }
 
-abstract class LDAPObject implements ArrayAccess {
+abstract class LDAPObject implements \ArrayAccess {
 	static protected $attr_names, $aliases;
 	protected $dn, $attrs;
 
