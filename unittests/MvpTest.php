@@ -1,7 +1,7 @@
 <?php
 class PresentersTest extends PHPUnit_Framework_TestCase {
 	public function testDetails() {
-		$_SESSION = array('user' => 'nsure');
+		$_SESSION = array('user' => 'nsure', 'pass' => 'qwerty');
 		$_SERVER['REQUEST_URI'] = '/details';
 
 		$pres = \presenters\Factory::getPresenter();

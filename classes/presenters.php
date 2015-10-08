@@ -31,8 +31,9 @@ abstract class Presenter implements IPresenter {
 	protected $user, $pass;
 
 	function __construct() {
-		if (!session_start()) {
-			throw new \Exception('Cannot start a session');
+		if (php_sapi_name() != 'cli') {
+			if (!session_start())
+				throw new \Exception('Cannot start a session');
 		}
 		if (isset($_SESSION['user'])) {
 			$this->user = $_SESSION['user'];
