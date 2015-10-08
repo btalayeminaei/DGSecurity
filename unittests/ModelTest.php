@@ -1,51 +1,35 @@
 <?php
-class InvalidLDAPObjectTest extends PHPUnit_Framework_TestCase {
-	public function testBadAttribute() {
-		$this->setExpectedException('\models\AttributeError');
-
-		$dn = 'cn=jdoe,dc=example,dc=org';
-		$attrs = array(
-			'cn' => 'jdoe',
-			'foo' => 'bar' # unknown attribute
-		);
-		$person = new \models\InetOrgPerson($dn, $attrs);
-	}
-
-	public function testMissingAttribute() {
-		$this->setExpectedException('\models\AttributeError');
-
-		$dn = 'cn=jdoe,dc=example,dc=org';
-		$attrs = array(
-			'cn' => 'jdoe'
-			# missing sn attribute
-		);
-		$person = new \models\InetOrgPerson($dn, $attrs);
-	}
-}
-
 class LDAPObjectTest extends PHPUnit_Framework_TestCase {
-	protected $person;
+	protected $person, $arr;
 
 	public function setUp() {
-		$dn = 'cn=jdoe,dc=example,dc=org';
-		$attrs = array(
-			'cn' => 'jdoe',
-			'sn' => 'Doe'
+		$dn = 'cn=nsure,dc=example,dc=org';
+		$this->arr = array(
+			'cn' => 'nsure',
+			'givenName' => 'Not',
+			'sn' => 'Sure'
 		);
-		$this->person = new \models\InetOrgPerson($dn, $attrs);
+		$this->person = new \models\InetOrgPerson($dn);
+		$this->person->fromArray($this->arr);
 	}
 
 	public function testAttribute() {
 		$this->assertEquals(
-			$this->person->surname,
-			'Doe'
+			'Sure',
+			$this->person['sn']
 		);
 	}
 
 	public function testAttributeAlias() {
 		$this->assertEquals(
-			$this->person->sn,
-			$this->person->surname
+			$this->person['sn'],
+			$this->person['surname']
 		);
+	}
+
+	public function testToArray() {
+		$arr = $this->person->toArray();
+
+		$this->assertArrayHasKey('cn', $arr);
 	}
 }
