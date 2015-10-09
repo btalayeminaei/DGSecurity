@@ -63,6 +63,8 @@ class Details extends Presenter implements IPresenter {
 		$conn = new \ldap\Connection($this->user, $this->pass);
 
 		$vars = $conn->read();
+		$person = new \models\InetOrgPerson(NULL);
+		$person->fromArray($vars);
 
 		$view = new \views\SmartyView('details');
 		$view->render($vars);

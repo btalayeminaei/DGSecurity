@@ -17,7 +17,7 @@ abstract class LDAPObject implements \ArrayAccess {
 
 	function __construct($dn) {
 		$this->dn = $dn;
-		$attrs = array_fill_keys(static::$attr_names, 'placeholder');
+		$attrs = array_fill_keys(static::$attr_names, NULL);
 		$this->attrs = array_change_key_case($attrs, CASE_LOWER);
 		if ( is_array(static::$aliases) ) {
 			foreach (static::$aliases as $alias => $target) {
