@@ -6,13 +6,13 @@ class SmartyView {
 	protected $tpl;
 
 	function __construct($template_name) {
-		$this->tpl = strtolower($template_name) . '.tpl';
+		$this->tpl = strtolower($template_name);
 	}
 
-	function render($vars) {
+	function render($props) {
 		$smarty = new \Smarty();
-		$smarty->assign($vars);
-		$smarty->display($this->tpl);
+		$smarty->assign($this->tpl, $props);
+		$smarty->display($this->tpl . '.tpl');
 	}
 }
 
