@@ -9,8 +9,7 @@ class LDAPObjectTest extends PHPUnit_Framework_TestCase {
 			'givenName' => 'Not',
 			'sn' => 'Sure'
 		);
-		$this->person = new \models\InetOrgPerson($dn);
-		$this->person->fromArray($this->arr);
+		$this->person = new \models\InetOrgPerson($this->arr, $dn);
 	}
 
 	public function testAttribute() {

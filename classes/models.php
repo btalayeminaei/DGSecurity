@@ -15,14 +15,19 @@ abstract class LDAPObject implements \ArrayAccess {
 	static protected $attr_names, $aliases;
 	protected $dn, $attrs;
 
-	function __construct($dn) {
+	function __construct($arr, $dn = NULL) {
 		$this->dn = $dn;
+
 		$attrs = array_fill_keys(static::$attr_names, NULL);
 		$this->attrs = array_change_key_case($attrs, CASE_LOWER);
 		if ( is_array(static::$aliases) ) {
 			foreach (static::$aliases as $alias => $target) {
 				$this->attrs[strtolower($alias)] = & $this->attrs[strtolower($target)];
 			}
+		}
+
+		foreach ($arr as $name => $value) {
+			$this->attrs[strtolower($name)] = $value;
 		}
 	}
 
@@ -46,14 +51,6 @@ abstract class LDAPObject implements \ArrayAccess {
 		$attrs = array_fill_keys(static::$attr_names, NULL);
 		$filter = array_change_key_case($attrs, CASE_LOWER);
 		return array_intersect_key($this->attrs, $filter);
-	}
-
-	public function fromArray($arr) {
-		foreach ($arr as $name => $value) {
-			#$this[$name] = $value;
-			$this->attrs[strtolower($name)] = $value;
-			#error_log("Set " . strtolower($name) . " to " . $this->attrs[strtolower($name)]);
-		}
 	}
 }
 
