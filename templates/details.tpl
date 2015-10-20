@@ -5,6 +5,9 @@
 		<title></title>
 	</head>
 	<body>
+		<div class="logout">
+			<a href="/logout">Log out</a>
+		</div>
 		<h1>Edit details</h1>
 		<img src="static/img/default.jpg" alt="Default photo" width="128" height="128" />
 		<form>

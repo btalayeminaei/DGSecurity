@@ -31,3 +31,14 @@ button {
 	font-size: larger;
 	padding: .5em;
 }
+
+.logout {
+	text-align: right;
+}
+
+.logout a {
+	background-color: gray;
+	color: white;
+	line-height: 150%;
+	padding: 1ex 1.5em;
+}
