@@ -74,8 +74,11 @@ class Details extends Presenter implements IPresenter {
 }
 
 abstract class SecurityPresenter implements IPresenter {
-	# override parent constructor
-	function __construct() { }
+	function __construct() {
+		if (!session_start()) {
+			throw new \Exception('Cannot start a session');
+		}
+	}
 
 	protected function denyAccess($msg = null) {
 		$vars = array('msg' => $msg);
@@ -86,10 +89,6 @@ abstract class SecurityPresenter implements IPresenter {
 
 class Login extends SecurityPresenter implements IPresenter {
 	public function run() {
-		if (!session_start()) {
-			throw new \Exception('Cannot start a session');
-		}
-
 		if (isset($_SESSION['user'])) {
 			$this->allowAccess();
 			return;
