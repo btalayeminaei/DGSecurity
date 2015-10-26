@@ -16,6 +16,9 @@ abstract class Factory {
 		case '/login':
 			$pres = new Login();
 			break;
+		case '/logout':
+			$pres = new Logout();
+			break;
 		case '/details':
 			$pres = new Details();
 			break;
@@ -70,10 +73,18 @@ class Details extends Presenter implements IPresenter {
 	}
 }
 
-class Login implements IPresenter {
+abstract class SecurityPresenter implements IPresenter {
 	# override parent constructor
 	function __construct() { }
 
+	protected function denyAccess($msg = null) {
+		$vars = array('msg' => $msg);
+		$view = new \views\SmartyView('login');
+		$view->render($vars);
+	}
+}
+
+class Login extends SecurityPresenter implements IPresenter {
 	public function run() {
 		if (!session_start()) {
 			throw new \Exception('Cannot start a session');
@@ -100,14 +111,24 @@ class Login implements IPresenter {
 		}
 	}
 
-	private function denyAccess($msg = null) {
-		$vars = array('msg' => $msg);
-		$view = new \views\SmartyView('login');
-		$view->render($vars);
-	}
-
 	private function allowAccess() {
 		$r = new \views\Redirect('/details');
 		$r->found();
+	}
+}
+
+class Logout extends SecurityPresenter implements IPresenter {
+	public function run() {
+		$_SESSION = array();
+		if (ini_get('session.use_cookies')) {
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', 0,
+				$params['path'], $params['domain'],
+				$params['secure'], $params['httponly']
+			);
+		}
+		session_destroy();
+
+		$this->denyAccess('You have logged out');
 	}
 }
