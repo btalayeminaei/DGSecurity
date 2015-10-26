@@ -75,37 +75,39 @@ class Login implements IPresenter {
 	function __construct() { }
 
 	public function run() {
-		switch ($_SERVER['REQUEST_METHOD']) {
-		case 'POST':
+		if (!session_start()) {
+			throw new \Exception('Cannot start a session');
+		}
+
+		if (isset($_SESSION['user'])) {
+			$this->allowAccess();
+			return;
+		}
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			try {
 				$user = $_POST['username'];
 				$pass = $_POST['password'];
 				$conn = new \ldap\Connection($user, $pass);
-				if (!session_start()) {
-					throw new \Exception('Cannot start a session');
-				}
 				$_SESSION['user'] = $user;
 				$_SESSION['pass'] = $pass;
+				$this->allowAccess();
 			} catch (\ldap\LDAPAuthError $e) {
-				$this->showLogin('Username or password incorrect');
-				break;
+				$this->denyAccess('Username or password incorrect');
 			}
-		default:
-			if (!session_start()) {
-				throw new \Exception('Cannot start a session');
-			}
-			if (isset($_SESSION['user'])) {
-				$r = new \views\Redirect('/details');
-				$r->found();
-			} else {
-				$this->showLogin();
-			}
+		} else { # normal login form
+			$this->denyAccess();
 		}
 	}
 
-	private function showLogin($msg = null) {
+	private function denyAccess($msg = null) {
 		$vars = array('msg' => $msg);
 		$view = new \views\SmartyView('login');
 		$view->render($vars);
+	}
+
+	private function allowAccess() {
+		$r = new \views\Redirect('/details');
+		$r->found();
 	}
 }
