@@ -59,7 +59,7 @@ class Connection {
 	}
 
 	public function read($dn = null) {
-		if (!$dn) $dn = $this->dn; # default to self
+		$dn = $dn ? $dn : $this->dn; # default to self
 
 		$attrs = array('givenName', 'surname', 'displayName',
 			'title', 'mail', 'mobile', 'telephoneNumber', 'uid');
@@ -72,6 +72,9 @@ class Connection {
 		return $this->flatten($entries[0]);
 	}
 
+	# Convert LDAP array to plain associative array
+	# E.g. { 'count': 1, '0': 'surname', 'surname': 'Sure' }
+	# becomes { 'surname': 'Sure' }
 	private function flatten($entry) {
 		$count = $entry['count'];
 		$result = array();

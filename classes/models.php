@@ -26,9 +26,15 @@ abstract class LDAPObject implements \ArrayAccess {
 			}
 		}
 
-		foreach ($arr as $name => $value) {
-			$this->attrs[strtolower($name)] = $value;
+		foreach ($this->filterAttrs($arr) as $name => $value) {
+			$this->attrs[$name] = $value;
 		}
+	}
+
+	public function filterAttrs($arr) {
+		$lcase_key = array_change_key_case($arr, CASE_LOWER);
+		$filtered = array_intersect_key($lcase_key, $this->attrs);
+		return $filtered;
 	}
 
 	public function offsetExists($offset) {
