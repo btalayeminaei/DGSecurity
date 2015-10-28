@@ -13,7 +13,7 @@
 		<div class="saved">{$message}</div>
 		{/if}
 		<img src="static/img/default.jpg" alt="Default photo" width="128" height="128" />
-		<form>
+		<form action="/details" method="post">
 			<fieldset>
 				<legend>Name</legend>
 				<span>
@@ -62,11 +62,11 @@
 				</span>
 				<span>
 					<label for="userpassword">Password</label>
-					<input type="password" id="userpassword" required="required" />
+					<input type="password" id="userpassword" />
 				</span>
 				<span>
 					<label for="repeatpassword">Repeat password</label>
-					<input type="password" id="repeatpassword" required="required" />
+					<input type="password" id="repeatpassword" />
 				</span>
 			</fieldset>
 			<button type="submit">Save</button>
