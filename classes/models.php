@@ -3,7 +3,7 @@ namespace models;
 
 class AttributeError extends \Exception {
 	public function __construct($msg, $attrs, $code = 0,
-		Exception $previous = null) {
+		Exception $previous = NULL) {
 		if (is_array($attrs)) {
 			$attrs = implode(', ', $attrs);
 		}

@@ -59,6 +59,8 @@ class SecurityError extends \Exception {
 	}
 }
 
+class UnmatchedPasswords extends \Exception { }
+
 class Details extends Presenter implements IPresenter {
 	public function run() {
 		$this->user = $_SESSION['user'];
@@ -67,9 +69,23 @@ class Details extends Presenter implements IPresenter {
 		$conn = new \ldap\Connection($this->user, $this->pass);
 		$view = new \views\SmartyView('details');
 
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$person = new \models\InetOrgPerson($_POST);
+			try {
+				# TODO: try save
+			} catch (\ldap\LDAPSrvErr $e) {
+				$resp = new \views\HTTPResponse;
+				$resp->send(403, 'Unable to save your changes, '
+					. 'please contact the administrator.');
+				return false;
+			} catch (UnmatchedPasswords $e) {
+			}
+		}
+
 		$attrs = $conn->read();
 		$person = new \models\InetOrgPerson($attrs);
 		$view->render($person);
+		return true;
 	}
 }
 
@@ -80,10 +96,9 @@ abstract class SecurityPresenter implements IPresenter {
 		}
 	}
 
-	protected function denyAccess($msg = null) {
-		$vars = array('msg' => $msg);
+	protected function denyAccess($msg = NULL) {
 		$view = new \views\SmartyView('login');
-		$view->render($vars);
+		$view->render(NULL, $msg);
 	}
 }
 

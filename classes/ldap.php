@@ -10,6 +10,7 @@ class LDAPSrvErr extends \Exception {
 			$errno = $code;
 			$msg = $arg;
 		}
+		error_log("LDAP Error $errno: $msg");
 		parent::__construct($msg, $errno);
 	}
 }
@@ -58,7 +59,7 @@ class Connection {
 		return $entries[0]['dn'];
 	}
 
-	public function read($dn = null) {
+	public function read($dn = NULL) {
 		$dn = $dn ? $dn : $this->dn; # default to self
 
 		$attrs = array('givenName', 'surname', 'displayName',

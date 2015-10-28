@@ -33,3 +33,10 @@ class Redirect {
 		exit("Please proceed to $url");
 	}
 }
+
+class HTTPResponse {
+	public function send($code, $message = NULL) {
+		http_response_code($code);
+		exit($message);
+	}
+}
