@@ -9,9 +9,10 @@ class SmartyView {
 		$this->tpl = strtolower($template_name);
 	}
 
-	function render($props) {
+	function render($props, $message = NULL) {
 		$smarty = new \Smarty();
 		$smarty->assign($this->tpl, $props);
+		$smarty->assign('message', $message);
 		$smarty->display($this->tpl . '.tpl');
 	}
 }
