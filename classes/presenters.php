@@ -68,17 +68,25 @@ class Details extends Presenter implements IPresenter {
 
 		$conn = new \ldap\Connection($this->user, $this->pass);
 		$view = new \views\SmartyView('details');
+		$message = NULL;
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$person = new \models\InetOrgPerson($_POST);
 			try {
-				# TODO: try save
+				if ($_POST['userpassword'] != $_POST['repeatpassword'])
+					throw new UnmatchedPasswords;
+				$conn->write($_POST);
+				$message = 'Changes saved';
 			} catch (\ldap\LDAPSrvErr $e) {
 				$resp = new \views\HTTPResponse;
 				$resp->send(403, 'Unable to save your changes, '
 					. 'please contact the administrator.');
 				return false;
 			} catch (UnmatchedPasswords $e) {
+				$resp = new \views\HTTPResponse;
+				$resp->send(403, 'Passwords you entered do not match. '
+					. 'Please type them again.');
+				return false;
 			}
 		}
 

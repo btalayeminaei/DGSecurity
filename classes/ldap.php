@@ -62,8 +62,8 @@ class Connection {
 	public function read($dn = NULL) {
 		$dn = $dn ? $dn : $this->dn; # default to self
 
-		$attrs = array('givenName', 'surname', 'displayName',
-			'title', 'mail', 'mobile', 'telephoneNumber', 'uid');
+		$attrs = array('givenname', 'surname', 'displayname',
+			'title', 'mail', 'mobile', 'telephonenumber', 'uid');
 		$result = ldap_read($this->conn, $dn, $this->filter, $attrs);
 		if (!$result) throw new LDAPAuthError();
 
@@ -71,6 +71,20 @@ class Connection {
 		if ($entries === false) throw new LDAPAuthError();
 
 		return $this->flatten($entries[0]);
+	}
+
+	public function write($attrs, $dn = NULL) {
+		$dn = $dn ? $dn : $this->dn; # default to self
+
+		$filter_attrs = array('displayname', 'title', 'mobile', 'telephonenumber');
+		# only change password if the new one given
+		if ($attrs['userpassword'])
+			$filter_attrs[] = 'userpassword';
+
+		$filter = array_fill_keys($filter_attrs, NULL);
+		$update = array_intersect_key($attrs, $filter);
+		$result = ldap_mod_replace($this->conn, $dn, $update);
+		if ($entries === false) throw new LDAPSrvErr($this->conn);
 	}
 
 	# Convert LDAP array to plain associative array

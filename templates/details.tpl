@@ -9,8 +9,8 @@
 			<a href="/logout">Log out</a>
 		</div>
 		<h1>Edit details</h1>
-		{if isset($login.msg) }
-		<div class="saved">{$details.msg}</div>
+		{if isset($message) }
+		<div class="saved">{$message}</div>
 		{/if}
 		<img src="static/img/default.jpg" alt="Default photo" width="128" height="128" />
 		<form>
