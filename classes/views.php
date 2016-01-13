@@ -1,6 +1,7 @@
 <?php
 namespace views;
-require_once("smarty3/Smarty.class.php");
+require_once('settings.php');
+require_once($smarty_class);
 
 class SmartyView {
 	protected $tpl;
