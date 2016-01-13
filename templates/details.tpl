@@ -18,11 +18,11 @@
 				<legend>Name</legend>
 				<span>
 					<label for="givenname">First</label>
-					<input type="text" name="givenname" required="required" value="{$details.givenname}" />
+					<input type="text" name="givenname" required="required" disabled="disabled" value="{$details.givenname}" />
 				</span>
 				<span>
 					<label for="sn">Last</label>
-					<input type="text" name="sn" required="required" value="{$details.surname}" />
+					<input type="text" name="sn" required="required" disabled="disabled" value="{$details.surname}" />
 				</span>
 				<span>
 					<label for="displayname">Display name</label>
