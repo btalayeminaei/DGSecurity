@@ -82,9 +82,11 @@ class Connection {
 			$filter_attrs[] = 'userpassword';
 
 		$filter = array_fill_keys($filter_attrs, NULL);
-		$update = array_intersect_key($attrs, $filter);
+		# LDAP doesn't take NULL for a value
+		$update = array_filter(array_intersect_key($attrs, $filter));
+
 		$result = ldap_mod_replace($this->conn, $dn, $update);
-		if ($entries === false) throw new LDAPSrvErr($this->conn);
+		if ($result === false) throw new LDAPSrvErr($this->conn);
 	}
 
 	# Convert LDAP array to plain associative array
