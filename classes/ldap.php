@@ -76,16 +76,24 @@ class Connection {
 	public function write($attrs, $dn = NULL) {
 		$dn = $dn ? $dn : $this->dn; # default to self
 
-		$filter_attrs = array('displayname', 'title', 'mobile', 'telephonenumber');
-		# only change password if the new one given
-		if ($attrs['userpassword'])
-			$filter_attrs[] = 'userpassword';
+		$allowed = array_fill_keys( array(
+			'displayname', 'title', 'mobile', 'telephonenumber', 'userpassword'
+		), NULL);
 
-		$filter = array_fill_keys($filter_attrs, NULL);
-		# LDAP doesn't take NULL for a value
-		$update = array_filter(array_intersect_key($attrs, $filter));
+		# strip other attribs than allowed
+		$attrs = array_intersect_key($attrs, $allowed);
 
-		$result = ldap_mod_replace($this->conn, $dn, $update);
+		# if userpassword not given, don't update it
+		if (isset($attrs['userpassword']) && $attrs['userpassword'] == '') {
+			unset($attrs['userpassword']);
+		}
+
+		# setting attribs to empty array deletes them from LDAP object
+		array_walk($attrs, function(&$val, $key) {
+			if ($val == '') $val = array();
+		});
+
+		$result = ldap_mod_replace($this->conn, $dn, $attrs);
 		if ($result === false) throw new LDAPSrvErr($this->conn);
 	}
 
