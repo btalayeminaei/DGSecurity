@@ -19,19 +19,14 @@ class SmartyView {
 }
 
 class Redirect {
-	protected $url;
-
-	function __construct($uri) {
+	function __construct($code, $uri) {
 		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
 		$server = $_SERVER['SERVER_NAME'];
-		$this->url = "$scheme://$server$uri";
-	}
+		$url = "$scheme://$server$uri";
 
-	public function found() {
-		http_response_code(302);
-		$url = $this->url;
+		http_response_code($code);
 		header("Location: $url");
-		exit("Please proceed to $url");
+		echo "Please proceed to $url";
 	}
 }
 

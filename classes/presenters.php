@@ -54,8 +54,8 @@ class SecurityError extends \Exception {
 		$return = isset($_GET['return']) ?
 			'?return=' . urlencode($_GET['return']) :
 			'';
-		$r = new \views\Redirect('/login' . $return);
-		$r->found();
+		$r = new \views\Redirect(302, '/login' . $return);
+		exit;
 	}
 }
 
@@ -76,7 +76,8 @@ class Details extends Presenter implements IPresenter {
 				if ($_POST['userpassword'] != $_POST['repeatpassword'])
 					throw new UnmatchedPasswords;
 				$conn->write($_POST);
-				$message = 'Changes saved';
+				$r = new \views\Redirect(303, '/details');
+				return true;
 			} catch (\ldap\LDAPSrvErr $e) {
 				$resp = new \views\HTTPResponse;
 				$resp->send(403, 'Unable to save your changes, '
@@ -88,12 +89,12 @@ class Details extends Presenter implements IPresenter {
 					. 'Please type them again.');
 				return false;
 			}
+		} else {
+			$attrs = $conn->read();
+			$person = new \models\InetOrgPerson($attrs);
+			$view->render($person);
+			return true;
 		}
-
-		$attrs = $conn->read();
-		$person = new \models\InetOrgPerson($attrs);
-		$view->render($person);
-		return true;
 	}
 }
 
@@ -134,8 +135,8 @@ class Login extends SecurityPresenter implements IPresenter {
 	}
 
 	private function allowAccess() {
-		$r = new \views\Redirect('/details');
-		$r->found();
+		$r = new \views\Redirect(302, '/details');
+		exit;
 	}
 }
 
