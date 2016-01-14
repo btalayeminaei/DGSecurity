@@ -18,21 +18,22 @@ class SmartyView {
 	}
 }
 
-class Redirect {
-	function __construct($code, $uri) {
-		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
-		$server = $_SERVER['SERVER_NAME'];
-		$url = "$scheme://$server$uri";
-
+class HTTPResponse {
+	function __construct($code) {
 		http_response_code($code);
-		header("Location: $url");
-		echo "Please proceed to $url";
+	}
+
+	function render($message) {
+		echo $message;
 	}
 }
 
-class HTTPResponse {
-	public function send($code, $message = NULL) {
-		http_response_code($code);
-		exit($message);
+class Redirect extends HTTPResponse {
+	function __construct($code, $uri) {
+		parent::__construct($code);
+		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+		$server = $_SERVER['SERVER_NAME'];
+
+		header("Location: $scheme://$server$uri");
 	}
 }
