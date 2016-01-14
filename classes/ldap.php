@@ -115,7 +115,7 @@ class Connection {
 
 	protected function escape_filter($string) {
 		if (function_exists('ldap_escape')) {
-			return ldap_escape($user, '', LDAP_ESCAPE_FILTER);
+			return ldap_escape($string, '', LDAP_ESCAPE_FILTER);
 		} else {
 			$map = array(
 				'\\' => '\\5c', # gotta be first, see str_replace info
