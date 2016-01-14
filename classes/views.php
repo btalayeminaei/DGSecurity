@@ -1,6 +1,6 @@
 <?php
 namespace views;
-require_once('settings.php');
+require('settings.php');
 require_once($smarty_class);
 
 class SmartyView {
