@@ -1,0 +1,43 @@
+<?php
+namespace views;
+require_once('settings.php');
+require_once($smarty_class);
+
+class SmartyView {
+	protected $tpl;
+
+	function __construct($template_name) {
+		$this->tpl = strtolower($template_name);
+	}
+
+	function render($props, $message = NULL) {
+		$smarty = new \Smarty();
+		$smarty->assign($this->tpl, $props);
+		$smarty->assign('message', $message);
+		$smarty->display($this->tpl . '.tpl');
+	}
+}
+
+class Redirect {
+	protected $url;
+
+	function __construct($uri) {
+		$scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+		$server = $_SERVER['SERVER_NAME'];
+		$this->url = "$scheme://$server$uri";
+	}
+
+	public function found() {
+		http_response_code(302);
+		$url = $this->url;
+		header("Location: $url");
+		exit("Please proceed to $url");
+	}
+}
+
+class HTTPResponse {
+	public function send($code, $message = NULL) {
+		http_response_code($code);
+		exit($message);
+	}
+}

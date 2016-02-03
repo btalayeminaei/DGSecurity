@@ -1,0 +1,35 @@
+.wrapper {
+	width: 18em;
+	margin: auto;
+}
+
+table, td *, form {
+	width: 100%;
+}
+
+button {
+	float: right;
+	margin-bottom: 3ex;
+}
+
+footer {
+	font-size: smaller;
+	text-align: center;
+	margin-top: 3ex;
+	clear: both;
+}
+
+h1 {
+	text-align: center;
+}
+
+.error {
+	text-align: center;
+	color: #c00;
+	border-color: #c00;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 1ex;
+	margin: 3ex auto;
+	line-height: 200%;
+}

@@ -1,0 +1,55 @@
+fieldset {
+	margin-bottom: 3ex;
+	padding-left: 1em;
+}
+
+label, input {
+	display: block;
+}
+
+span {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+form {
+	left: 138px;
+	padding-top: 0;
+	display: inline-block;
+	position: relative
+}
+
+input {
+	width: 18em;
+}
+
+img {
+	position: absolute;
+}
+
+button {
+	font-size: larger;
+	padding: .5em;
+}
+
+.logout {
+	text-align: right;
+}
+
+.logout a {
+	background-color: gray;
+	color: white;
+	line-height: 150%;
+	padding: 1ex 1.5em;
+}
+
+.error {
+	text-align: center;
+	color: #0c0;
+	border-color: #0c0;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 1ex;
+	margin: 3ex auto;
+	line-height: 200%;
+}
