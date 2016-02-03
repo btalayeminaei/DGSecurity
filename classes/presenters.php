@@ -100,8 +100,9 @@ class Details extends Presenter implements IPresenter {
 
 abstract class SecurityPresenter implements IPresenter {
 	function __construct() {
-		if (!session_start()) {
-			throw new \Exception('Cannot start a session');
+		if (php_sapi_name() != 'cli') {
+			if (!session_start())
+				throw new \Exception('Cannot start a session');
 		}
 	}
 
