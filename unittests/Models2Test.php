@@ -14,7 +14,7 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 			'mail' => 'jdoe@example.com',
 			'displayName' => 'jdoe',
 			'description' => 'short description.',
-			'offSet' => 'notExist'
+			'telexNumber' => '123456'
 		);
 		$this->person = new \models\InetOrgPerson($this->arr, $dn);
 	}
@@ -57,7 +57,6 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testInfo () {
-
 		$this->assertEquals(
 			'pass',
 			$this->person['userPassword']
@@ -78,44 +77,24 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testOffsetExists () {
-		$this->assertTrue(
-			$this->person->offsetExists('cn'));
-		$this->assertFalse(
-			$this->person->offsetExists('offSet'));
-	}
 
-	public function testOffsetGet () {
-		$mail = $this->person->offsetGet('mail');
-		$this->assertEquals(
-			'jdoe@example.com',
-			$mail
-		);
-	}
-
-	public function testOffsetSet () {
-		$this->person->offsetSet('userPassword','pass2');
+	public function testResetPass () {
+		$this->person['userPassword'] = 'pass2';
 		$this->assertEquals(
 			'pass2',
 			$this->person['userPassword']
 		);
 	}
 
-	public function testOffsetSet2 () {
-		$this->person->offsetSet('fake1','set');
-		$this->assertTrue($this->person->offsetExists('fake1'));
+	public function testExists () {
+		$this->assertFalse($this->person->offsetExists('telexNumber'));
 	}
 
 	public function testOffsetUnset () {
-		$this->person->offsetUnset ('description');
+		$this->person['description'] = NULL;
 		$this->assertNull($this->person['description']);
 	}
 
-	public function testOffsetUnset2 () {
-		$this->assertFalse($this->person->offsetExists('fake2'));
-		$this->person->offsetUnset ('fake2');
-		$this->assertTrue($this->person->offsetExists('fake2'));
-	}
 
 	#### array does not have the following keys:
 	# 	sn
