@@ -76,6 +76,8 @@ class Details extends Presenter implements IPresenter {
 				if ($_POST['userpassword'] != $_POST['repeatpassword'])
 					throw new UnmatchedPasswords;
 				$conn->write($_POST);
+				# update session password
+				$_SESSION['pass'] = $_POST['userpassword'];
 				new \views\Redirect(303, '/details');
 				return true;
 			} catch (\ldap\LDAPSrvErr $e) {
