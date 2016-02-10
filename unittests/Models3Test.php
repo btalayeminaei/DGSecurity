@@ -13,7 +13,7 @@ class Models3Test extends PHPUnit_Framework_TestCase {
 		$this->person = new \models\InetOrgPerson($this->arr, $dn);
 	}
 
-	public function testOffsetSet() { 
+	public function testOffsetSet() {
 		$this->person['uid'] = '* attack';
 		$this->assertEquals(
 			'\* attack',

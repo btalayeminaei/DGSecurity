@@ -24,7 +24,7 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 			'jdoe',
 			$this->person['cn']
 		);
-		
+
 		$this->assertEquals(
 			'jdoe',
 			$this->person['uid']
@@ -34,22 +34,22 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 			'jdoe',
 			$this->person['displayName']
 		);
-		
+
 		$this->assertEquals(
 			'Doe',
 			$this->person['sn']
 		);
-		
+
 		$this->assertEquals(
 			'Doe',
 			$this->person['surname']
 		);
-		
+
 		$this->assertEquals(
 			'John',
 			$this->person['givenName']
 		);
-		
+
 		$this->assertEquals(
 			'John',
 			$this->person['gn']
@@ -62,7 +62,7 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 			'pass',
 			$this->person['userPassword']
 		);
-		
+
 		$this->assertEquals(
 			'1234567890',
 			$this->person['mobile']
@@ -78,17 +78,17 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testOffsetExists () { 
+	public function testOffsetExists () {
 		$this->assertTrue(
 			$this->person->offsetExists('cn'));
 		$this->assertFalse(
 			$this->person->offsetExists('offSet'));
 	}
 
-	public function testOffsetGet () { 
+	public function testOffsetGet () {
 		$mail = $this->person->offsetGet('mail');
 		$this->assertEquals(
-			'jdoe@example.com', 
+			'jdoe@example.com',
 			$mail
 		);
 	}
@@ -101,8 +101,7 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 		);
 	}
 
-	#### HERE
-	public function testOffsetSet2 () { 
+	public function testOffsetSet2 () {
 		$this->person->offsetSet('fake1','set');
 		$this->assertTrue($this->person->offsetExists('fake1'));
 	}
@@ -112,7 +111,6 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 		$this->assertNull($this->person['description']);
 	}
 
-	#### HERE
 	public function testOffsetUnset2 () {
 		$this->assertFalse($this->person->offsetExists('fake2'));
 		$this->person->offsetUnset ('fake2');
@@ -122,7 +120,7 @@ class Models2Test extends PHPUnit_Framework_TestCase {
 	#### array does not have the following keys:
 	# 	sn
 	# 	gn
-	public function testToArray() { 
+	public function testToArray() {
 		$this->person->offsetUnset ('description');
 		$arr = $this->person->toArray();
 		$this->assertArrayHasKey('cn', $arr);
