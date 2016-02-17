@@ -47,7 +47,7 @@ abstract class Presenter implements IPresenter {
 	}
 }
 
-class PresenterError extends \Exception { } 
+class PresenterError extends \Exception { }
 
 class SecurityError extends \Exception {
 	public function handle() {
@@ -76,6 +76,9 @@ class Details extends Presenter implements IPresenter {
 				if ($_POST['userpassword'] != $_POST['repeatpassword'])
 					throw new UnmatchedPasswords;
 				$conn->write($_POST);
+				if (isset($_POST['userpassword']) && $_POST['userpassword'] != '') {
+					$_SESSION['pass'] = $_POST['userpassword'];
+				}
 				new \views\Redirect(303, '/details');
 				return true;
 			} catch (\ldap\LDAPSrvErr $e) {
