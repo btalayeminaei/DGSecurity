@@ -47,7 +47,7 @@ abstract class Presenter implements IPresenter {
 	}
 }
 
-class PresenterError extends \Exception { } 
+class PresenterError extends \Exception { }
 
 class SecurityError extends \Exception {
 	public function handle() {
@@ -73,11 +73,13 @@ class Details extends Presenter implements IPresenter {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$person = new \models\InetOrgPerson($_POST);
 			try {
-				if ($_POST['userpassword'] != $_POST['repeatpassword'])
+				$newpass = $_POST['userpassword'];
+				if ($newpass != $_POST['repeatpassword'])
 					throw new UnmatchedPasswords;
 				$conn->write($_POST);
-				# update session password
-				$_SESSION['pass'] = $_POST['userpassword'];
+				if ($newpass) {
+					$_SESSION['pass'] = $newpass;
+				}
 				new \views\Redirect(303, '/details');
 				return true;
 			} catch (\ldap\LDAPSrvErr $e) {

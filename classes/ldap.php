@@ -23,7 +23,7 @@ class Connection {
 	function __construct($user, $pass) {
 		require 'settings.php';
 		$this->base = $base;
-		$safe_user = $this->escape_filter($user);
+		$safe_user = Connection::escape_filter($user);
 		$this->filter = sprintf($filter, $safe_user);
 
 		$this->conn = ldap_connect($host, $port);
@@ -113,7 +113,7 @@ class Connection {
 		return $result;
 	}
 
-	protected function escape_filter($string) {
+	static function escape_filter($string) {
 		if (function_exists('ldap_escape')) {
 			return ldap_escape($string, '', LDAP_ESCAPE_FILTER);
 		} else {
